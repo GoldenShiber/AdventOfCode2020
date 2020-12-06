@@ -7,6 +7,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import utils.DataHandling;
+
 
 public class Day5 {
 
@@ -38,9 +40,6 @@ public class Day5 {
 		return rowMax*8+colMax;
 	}
 	
-	public static int minIndex (ArrayList<Integer> list) {
-		  return list.indexOf(Collections.min(list)); }
-	
 	public static void main(String[] args) throws IOException {
 		URL inputURL = Day1.class.getClassLoader().getResource("inputFiles/inputDay5.txt");
 		BufferedReader inFile = new BufferedReader(
@@ -55,7 +54,7 @@ public class Day5 {
         	
         }
 
-        for(int i = boardingPasses.get(minIndex(boardingPasses)); i <1016; i++) {
+        for(int i = boardingPasses.get(DataHandling.minIndex(boardingPasses)); i <1016; i++) {
         	if(!boardingPasses.contains(i)) {
         		System.out.println("My boarding pass is: " + i);
         		break;

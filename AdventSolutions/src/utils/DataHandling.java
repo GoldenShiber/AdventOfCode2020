@@ -1,5 +1,6 @@
 package utils;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -34,5 +35,8 @@ public class DataHandling {
 			System.out.println(list.get(i));
 		}
 	}
+	
+	public static int minIndex (ArrayList<Integer> list) {
+		  return list.indexOf(Collections.min(list)); }
 	
 }
