@@ -58,4 +58,16 @@ public class DataHandling {
 		
 		return newList;
 	}
+	
+	public static ArrayList<String> readStringsBySeparatorRaw(String fileName) throws IOException{
+		ArrayList<String> newList = new ArrayList<>();
+		URL inputURL = DataHandling.class.getClassLoader().getResource(fileName);
+		BufferedReader inFile = new BufferedReader(
+				new InputStreamReader(inputURL.openStream()));
+		while ((inputLine = inFile.readLine()) != null) {
+        	newList.add(inputLine);
+        }
+		
+		return newList;
+	}
 }
