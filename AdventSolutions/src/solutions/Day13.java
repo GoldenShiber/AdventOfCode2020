@@ -82,6 +82,7 @@ public class Day13 {
 		 System.out.println("Starting part 2: If it takes too much time, use the Chinese Remainder Theorem");
 		 System.out.println("Follow the chinese remainder theorem rules, with inputs from the chinese map!");
 		 System.out.println("https://www.dcode.fr/chinese-remainder is a tool here which is easy to use.");
+		 System.out.println("For example, 16, 17, from input means -> [Remainder = 0, mod 16] and [Remainder = -1, mod 17] ");
 		 ArrayList<Double> numberList = new ArrayList<>();
 		 for(String line : busList) {
 			 numberList.add(Double.parseDouble(line));
