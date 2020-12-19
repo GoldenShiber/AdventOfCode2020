@@ -151,7 +151,6 @@ public class Day17 {
 	
 	public static ArrayList<ArrayList<String>> updateCubeWithRules(ArrayList<ArrayList<String>> cube){
 		ArrayList<ArrayList<String>> newCube = cloneMap(cube);
-		ArrayList<String> dummyList = new ArrayList<>();
 		for(int k = 0; k < zSize; k++) {
 			for(int j = 0; j< ySize; j++) {
 				String yString = "";
@@ -167,7 +166,6 @@ public class Day17 {
 	
 	public static ArrayList<ArrayList<ArrayList<String>>> updateHyperCubeWithRules(ArrayList<ArrayList<ArrayList<String>>> hyperCube){
 		ArrayList<ArrayList<ArrayList<String>>> newHyperCube = cloneHyperMap(hyperCube);
-		ArrayList<String> dummyList = new ArrayList<>();
 		for(int q = 0; q < wSize; q++) {
 			for(int k = 0; k < zSize; k++) {
 				for(int j = 0; j< ySize; j++) {
@@ -335,7 +333,6 @@ public class Day17 {
 		 ;
 		 ArrayList<ArrayList<String>> newCube = new ArrayList<>();
 		 cube.add(yData);
-		 ArrayList<ArrayList<String>> originalList = cloneMap(cube);
 		 
 		 // Part one start: 
 		 newCube = updateCubeSize(cube);
