@@ -10,10 +10,10 @@ public class Day19 {
 
 	public static HashMap<Integer, String> ruleMap = new HashMap<>();
 	public static HashMap<Integer, ArrayList<String>> ruleConfigurations = new HashMap<>();
+	public static int[] combinationImageSizes = {0, 0};
 	
 	public static ArrayList<String> recursiveFill(String rule){
 		
-		String mod = "";
 		ArrayList<String> modList = new ArrayList<>();
 		ArrayList<ArrayList<String>> arrayOfArrayList = new ArrayList<>();
 		if(rule.contains("|")) {
@@ -32,45 +32,70 @@ public class Day19 {
 			for(String ruleNumbers : rule.split(" ")){
 				arrayOfArrayList.add(recursiveFill(ruleMap.get(Integer.parseInt(ruleNumbers))));
 			}
-//			for(ArrayList<String> arrayLine : arrayOfArrayList) {
-//				modList.add(arrayLine.get(0));
-//			}
-			modList = parallelList(arrayOfArrayList);
+			modList = DataHandling.parallelList(arrayOfArrayList);
 			
 		}
 		else {
+			if(Character.isDigit(rule.charAt(0))) {
+				modList = recursiveFill(ruleMap.get(Integer.parseInt(rule)));
+			} else {
 			modList.add(rule);	
+			}
 		}
 		return modList;
 	}
 	
 	
-	public static ArrayList<String> parallelList(ArrayList<ArrayList<String>> bigArrayList){
-		ArrayList<String> testList = new ArrayList<>();
-		String testString = "";
-		String testXString = "";
-		String testYString = "";
-		if(bigArrayList.size() > 1) {
-			for(int i = 0; i < bigArrayList.get(0).size(); i++) {
-//				testString = bigArrayList.get(0).get(j) + testString;
-				testXString = bigArrayList.get(0).get(i) + testString;
-				for(int j = 0; j < bigArrayList.get(1).size(); j++) {
-					testYString =testXString + bigArrayList.get(1).get(j);
-					if(bigArrayList.size() == 3) {
-						for(int k = 0; k < bigArrayList.get(2).size(); k++) {
-							testList.add(testYString + bigArrayList.get(2).get(k));
-						} 
-					} else {
-						testList.add(testYString);
+	public static int validLines(ArrayList<String> testLines) {
+		int count = 0;
+		ArrayList<String> shortRules = ruleConfigurations.get(42);
+		ArrayList<String> longRules = ruleConfigurations.get(31);
+
+		
+		for(String line : testLines) {
+			// Start with 42x examples
+			
+			// First check base rules, if it has the chance of being legit. 
+			// First two must be of type 42, and last must be of type 31
+			int forTwoCounter = 0;
+			int forThreeCounter = 0;
+			int mode = 0;
+			String testString = "";
+			String firstCheck = line.substring(0, combinationImageSizes[0]);
+			String secondCheck = line.substring(combinationImageSizes[0], combinationImageSizes[0]*2);
+			String thirdCheck = line.substring(line.length()-combinationImageSizes[0]);
+			int startIndex = 0;
+			int endIndex = startIndex + combinationImageSizes[0];
+			if(shortRules.contains(firstCheck) && shortRules.contains(secondCheck) && longRules.contains(thirdCheck)) {
+				forTwoCounter = 0;
+				forThreeCounter = 0;
+				if(endIndex == line.length()){
+					count++;
+					continue;
+				}
+				while(endIndex < line.length()) {
+					testString = line.substring(startIndex, endIndex);
+					if(shortRules.contains(testString) && mode == 0) {
+						startIndex += combinationImageSizes[0];
+						endIndex += combinationImageSizes[0];
+						forTwoCounter++;
+					} 
+					else if(longRules.contains(testString) && forThreeCounter < forTwoCounter -2) {
+						mode = 1;
+						startIndex += combinationImageSizes[0];
+						endIndex += combinationImageSizes[0];
+						forThreeCounter++;
+					}
+					else {
+						break;
 					}
 				}
+				if(endIndex == line.length()) {
+					count++;
+					}
 			}
-			
-		} else {
-			testList = bigArrayList.get(0);
 		}
-		return testList;
-		
+		return count;
 	}
 
 	
@@ -86,12 +111,8 @@ public class Day19 {
 	
 	public static void main(String[] args) throws IOException {
 		 ArrayList<String> lines = DataHandling.readStringsBySeparatorRaw("inputFiles/inputDay19.txt");
-//		 ArrayList<String> lines = DataHandling.readStringsBySeparatorRaw("inputFiles/test19.txt");
-
-		 ArrayList<String> kekLines = new ArrayList<>();
-		 kekLines.add("keke");
-		 kekLines.add("loco");
 		 
+		 ArrayList<String> kekLines = new ArrayList<>();
 		 ArrayList<String> testLines = new ArrayList<>();
 		 for(String line : lines) {
 			 String[] ruleLines = line.split(":");
@@ -102,15 +123,23 @@ public class Day19 {
 				 ruleMap.put(index, ruleDefinition);
 			 }
 			 else {
+				 if(line.length()>0) {
 				 testLines.add(line);
+				 }
 			 }
 		 }
 		 
-//		 ArrayList<String> zeroRuleList = matchCandidates(ruleMap.get(0));
-//		 System.out.println(partOne(testLines, zeroRuleList));
 		 kekLines = recursiveFill(ruleMap.get(0));
-		 System.out.println(partOne(testLines, kekLines));
+		 System.out.println("The part 1 gives answer: "+ partOne(testLines, kekLines));
 		 
+		 ArrayList<String> totLines = recursiveFill(ruleMap.get(42));
+		 ArrayList<String> mehLines = recursiveFill(ruleMap.get(31));
+		 ruleConfigurations.put(42, totLines);
+		 ruleConfigurations.put(31, mehLines);
+		 combinationImageSizes[0] = DataHandling.maxWordLengthInList(totLines);
+		 combinationImageSizes[1] = combinationImageSizes[0]*2;
+		 
+		 System.out.println("The solution for part 2 is: "+validLines(testLines));
 	}
 	
 }
